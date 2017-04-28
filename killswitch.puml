@@ -1,4 +1,18 @@
 @startuml
 actor user
-user -> hootsuite: stop messages
+user -> dashboard: stop messages
+dashboard -> app: /stopall
+app -> database: enable prescreening for date range
+app -> API: /messages?
+API -> app: messages[]
+app -> API: POST /message scheduledTime + 24 hours
+app -> API: DELETE /messages/messageID
+app -> dashboard: messages deleted[], messages created[]
+dashboard -> user: messages stopped
+user -> dashboard: start messages
+dashboard -> app: /startall
+app -> database: disable prescreening
+app -> dashboard: messages started
+dashboard -> user: killswitch disabled
+
 @enduml

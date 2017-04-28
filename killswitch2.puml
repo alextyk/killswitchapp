@@ -1,0 +1,13 @@
+@startuml
+user -> dashboard: create message
+dashboard -> app: /process webhook
+app -> database: publishing enabled?
+database -> app: true
+app -> dashboard: /message/messageID/accept
+dashboard -> user: message scheduled/send
+database -> app: false
+dashboard -> user: message needs approval
+
+
+
+@enduml
