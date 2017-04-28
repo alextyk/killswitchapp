@@ -1,0 +1,39 @@
+version: "2"
+
+services:
+  nodejs:
+    build: .
+    command: nodemon --inspect=0.0.0.0:9221 server.js
+    links:
+      - mongo:27017
+    volumes:
+      - .:/code
+    ports:
+      - "8080"
+      - "9221:9221"
+
+  ngrok:
+    image: wernight/ngrok
+    links:
+      - nginx:80
+    command: ngrok http nginx:80
+    ports:
+      - "4040"
+
+  nginx:
+    image: nginx
+    links:
+      - nodejs:8080
+    volumes:
+      - ./static:/usr/share/nginx/html:ro
+      - ./conf.d:/etc/nginx/conf.d:ro
+    ports:
+      - "80"
+      - "443"
+
+  mongo:
+    image: mongo:3
+    volumes:
+      - ./datadir:/data/db
+    ports:
+      - "27017"

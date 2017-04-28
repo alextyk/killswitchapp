@@ -1,0 +1,4 @@
+@startuml
+actor user
+user -> hootsuite: stop messages
+@enduml
